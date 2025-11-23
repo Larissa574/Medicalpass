@@ -1,0 +1,69 @@
+package medipass;
+
+import medipass.model.Antecedent;
+import medipass.model.ExamenMedical;
+import java.time.LocalDateTime;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("=== SYSTÈME MEDIPASS ===");
+        System.out.println("Test des classes Antecedent et ExamenMedical\n");
+
+        // Test Antécédent
+        System.out.println("1. CRÉATION D'UN ANTÉCÉDENT:");
+        Antecedent allergie = new Antecedent.Builder(1,
+                Antecedent.TypeAntecedent.ALLERGIE,
+                "Allergie à la pénicilline")
+                .anneeDebut(2018)
+                .severite("GRAVE")
+                .commentaires("Réaction anaphylactique - contre-indication absolue")
+                .build();
+
+        System.out.println(allergie);
+        System.out.println("Actif: " + allergie.estActif());
+        System.out.println("Période: " + allergie.getPeriodeFormatee());
+
+        // Test Examen Médical - CORRIGÉ
+        System.out.println("\n2. CRÉATION D'UN EXAMEN MÉDICAL:");
+        ExamenMedical priseSang = new ExamenMedical.Builder(1,
+                ExamenMedical.TypeExamen.PRISE_SANG,
+                "Dr. Martin")
+                .urgence(ExamenMedical.Urgence.NORMAL)
+                .laboratoire("Laboratoire Central")
+                .resultat("Glycémie: 1.10 g/L - Normal\nHémoglobine: 14.2 g/dL")
+                .statut(ExamenMedical.StatutExamen.REALISE)
+                .datePrescription(LocalDateTime.now().minusDays(2)) // Prescription il y a 2 jours
+                .dateRealisation(LocalDateTime.now().minusDays(1))  // Réalisation hier → VALIDE
+                .build();
+
+        System.out.println(priseSang);
+        System.out.println("Réalisé: " + priseSang.estRealise());
+        System.out.println("Urgent: " + priseSang.estUrgent());
+        System.out.println("Date prescription: " + priseSang.getDatePrescription());
+        System.out.println("Date réalisation: " + priseSang.getDateRealisation());
+
+        // Test avec un examen futur
+        System.out.println("\n3. EXAMEN PLANIFIÉ:");
+        ExamenMedical radioFuture = new ExamenMedical.Builder(2,
+                ExamenMedical.TypeExamen.RADIOGRAPHIE,
+                "Dr. Dupont")
+                .urgence(ExamenMedical.Urgence.URGENT)
+                .statut(ExamenMedical.StatutExamen.PRESCRIT)
+                .datePrescription(LocalDateTime.now())
+                .dateRealisation(LocalDateTime.now().plusDays(3)) // Dans 3 jours
+                .build();
+
+        System.out.println(radioFuture);
+        System.out.println("Réalisé: " + radioFuture.estRealise());
+
+        // Test avec erreur
+        System.out.println("\n4. TEST DE VALIDATION (doit échouer):");
+        try {
+            Antecedent errone = new Antecedent.Builder(0, null, "").build();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erreur capturée: " + e.getMessage());
+        }
+
+        System.out.println("\n=== TESTS TERMINÉS ===");
+    }
+}
