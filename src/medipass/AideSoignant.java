@@ -1,6 +1,6 @@
 package medipass;
 
-public class AideSoignant {
+public class AideSoignant extends ProfessionnelSante {
 
     private int id;
     private String nom;

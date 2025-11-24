@@ -24,5 +24,6 @@ public class Consultation {
     public void annuler() {
         estProgrammee = false;
         System.out.println("Consultation annulée pour " + patient.getNom()+".");
-}
+    }
+    
 }
