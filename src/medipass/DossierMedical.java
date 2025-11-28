@@ -1,130 +1,127 @@
-package medipass;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DossierMedical {
-
-    private static int compteurId = 0;
-    private String idDossier;
     private Patient patient;
-    private LocalDate dateCreation;
     private List<Antecedent> antecedents;
-    private List<String> idsConsultations;
+    private List<Consultation> consultations;
+    private List<ExamenMedical> examens;
+    private List<Prescription> prescriptions;
+    private List<String> constantes;
+    private String groupeSanguin;
+    private boolean archive;
 
-    
     public DossierMedical(Patient patient) {
-        if (patient == null) {
-            throw new IllegalArgumentException("Le patient est obligatoire");
-        }
-
-        compteurId++;
-        this.idDossier = "DM-" + String.format("%05d", compteurId);
         this.patient = patient;
-        this.dateCreation = LocalDate.now();
         this.antecedents = new ArrayList<>();
-        this.idsConsultations = new ArrayList<>();
-    }
-
-    
-    public Antecedent ajouterAntecedent(String type, String description,
-                                        LocalDate date, String gravite) {
-        Antecedent antecedent = new Antecedent(type, description, date, gravite);
-        antecedents.add(antecedent);
-        return antecedent;
-    }
-
-    public Antecedent ajouterAntecedent(String type, String description) {
-        return ajouterAntecedent(type, description, null, "Modéré");
-    }
-
-    public Antecedent ajouterAllergie(String allergene, String gravite) {
-        return ajouterAntecedent("Allergie", "Allergie à : " + allergene, null, gravite);
-    }
-
-    public Antecedent ajouterAllergie(String allergene) {
-        return ajouterAllergie(allergene, "Modéré");
-    }
-
-    public List<Antecedent> getAntecedents() {
-        return antecedents;
-    }
-
-    public List<Antecedent> getAllergies() {
-        List<Antecedent> allergies = new ArrayList<>();
-        for (Antecedent a : antecedents) {
-            if (a.getType().equals("Allergie")) {
-                allergies.add(a);
-            }
-        }
-        return allergies;
-    }
-
-    public boolean aDesAllergies() {
-        return !getAllergies().isEmpty();
-    }
-
- 
-    
-    public void ajouterConsultation(String idConsultation) {
-        idsConsultations.add(idConsultation);
-    }
-
-    public List<String> getIdsConsultations() {
-        return idsConsultations;
-    }
-
-    
-    public String getIdDossier() {
-        return idDossier;
+        this.consultations = new ArrayList<>();
+        this.examens = new ArrayList<>();
+        this.prescriptions = new ArrayList<>();
+        this.constantes = new ArrayList<>();
+        this.archive = false;
     }
 
     public Patient getPatient() {
         return patient;
     }
 
-    public LocalDate getDateCreation() {
-        return dateCreation;
+    public List<Antecedent> getAntecedents() {
+        return antecedents;
     }
 
-    
-    public String afficherResume() {
-        StringBuilder sb = new StringBuilder();
+    public void ajouterAntecedent(Antecedent antecedent) {
+        this.antecedents.add(antecedent);
+    }
 
-        sb.append("========== DOSSIER MÉDICAL ==========\n");
-        sb.append("ID Dossier: ").append(idDossier).append("\n");
-        sb.append("Patient: ").append(patient.getNomComplet()).append("\n");
-        sb.append("Âge: ").append(patient.getAge()).append(" ans\n");
-        sb.append("Créé le: ").append(dateCreation).append("\n\n");
+    public List<Consultation> getConsultations() {
+        return consultations;
+    }
 
-     
-        List<Antecedent> allergies = getAllergies();
-        if (!allergies.isEmpty()) {
-            sb.append("⚠ ALLERGIES:\n");
-            for (Antecedent a : allergies) {
-                sb.append("  - ").append(a.getDescription());
-                sb.append(" [").append(a.getGravite()).append("]\n");
-            }
-            sb.append("\n");
+    public void ajouterConsultation(Consultation consultation) {
+        this.consultations.add(consultation);
+    }
+
+    public List<ExamenMedical> getExamens() {
+        return examens;
+    }
+
+    public void ajouterExamen(ExamenMedical examen) {
+        this.examens.add(examen);
+    }
+
+    public List<Prescription> getPrescriptions() {
+        return prescriptions;
+    }
+
+    public void ajouterPrescription(Prescription prescription) {
+        this.prescriptions.add(prescription);
+    }
+
+    public List<String> getConstantes() {
+        return constantes;
+    }
+
+    public void ajouterConstante(String constante) {
+        if (constante != null && !constante.isBlank()) {
+            constantes.add(constante);
         }
+    }
 
-        sb.append("ANTÉCÉDENTS (").append(antecedents.size()).append("):\n");
-        if (antecedents.isEmpty()) {
-            sb.append("  Aucun antécédent\n");
-        } else {
-            for (Antecedent a : antecedents) {
-                sb.append("  - ").append(a.toString()).append("\n");
-            }
-        }
+    public String getGroupeSanguin() {
+        return groupeSanguin;
+    }
 
-      
+    public void setGroupeSanguin(String groupeSanguin) {
+        this.groupeSanguin = groupeSanguin;
+    }
+
+    public boolean isArchive() {
+        return archive;
+    }
+
+    public void archiver() {
+        this.archive = true;
+    }
+
+    public void desarchiver() {
+        this.archive = false;
+    }
+
+    public void afficher() {
+        System.out.println("\n=== Dossier Médical ===");
+        patient.afficherDetails();
+        System.out.println("Groupe sanguin: " + (groupeSanguin != null ? groupeSanguin : "Non renseigné"));
+        System.out.println("Statut: " + (archive ? "Archivé" : "Actif"));
         
-        return sb.toString();  
-    }
+        System.out.println("\n--- Antécédents (" + antecedents.size() + ") ---");
+        for (Antecedent ant : antecedents) {
+            System.out.println("  - " + ant);
+        }
+        
+        System.out.println("\n--- Consultations (" + consultations.size() + ") ---");
+        for (Consultation cons : consultations) {
+            ProfessionnelSante professionnel = cons.getProfessionnel();
+            String medecin = professionnel != null ? professionnel.getNom() + " " + professionnel.getPrenom() : "Inconnu";
+            System.out.println("  ID: " + cons.getId());
+            System.out.println("    Date et heure: " + cons.getDateHeure());
+            System.out.println("    Médecin: " + medecin);
+            System.out.println("    Motif: " + (cons.getMotif() != null ? cons.getMotif() : "Non renseigné"));
+            System.out.println("    Observation: " + (cons.getObservations() != null ? cons.getObservations() : "Non renseigné"));
+        }
+        
+        System.out.println("\n--- Examens (" + examens.size() + ") ---");
+        for (ExamenMedical exam : examens) {
+            System.out.println("  - " + exam);
+        }
+        
+        System.out.println("\n--- Prescriptions (" + prescriptions.size() + ") ---");
+        for (Prescription presc : prescriptions) {
+            System.out.println("  - " + presc);
+        }
 
-   
-    public String toString() {
-        return "DossierMedical [" + idDossier + "] - Patient: " + patient.getNomComplet();
+        System.out.println("\n--- Constantes récentes (" + constantes.size() + ") ---");
+        for (String constante : constantes) {
+            System.out.println("  - " + constante);
+        }
     }
 }

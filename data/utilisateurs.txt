@@ -1,0 +1,14 @@
+ADMIN|1000|Admin|Système|admin|admin123#|
+ADMIN|1001|GUENDEHOU|LARISSA|Lari|12345|
+AIDE_SOIGNANT|1003|AZE|ASE|QSI|cder1234#|
+MEDECIN|1004|GUENDEHOU|Larissa|azii|cder123@|Dermatologie
+MEDECIN|1006|GUEN|Owen|Owen1|098|Généraliste
+ADMIN|1008|ghj|zerty|xcv|rt|
+MEDECIN|1010|qd|advv|hgnghu|cder123@|cardiologue
+AIDE_SOIGNANT|1012|cgh|tyin|zeb|cder123@|
+MEDECIN|1013|AIMAWA|Forlène|safiathe|admin123@|Cardiologie
+ADMIN|1015|VBNP|GHJ|RTGHYJ|cder123@|
+AIDE_SOIGNANT|1017|vyu|poiu|vb|cder123@|
+ADMIN|1018|GUEN|DEHOU|dfff|cder1234]|
+ADMIN|1019|teygb|hbbrfb|bhrb|cder123²|
+MEDECIN|1020|ytfetfe|hgvgdvluj|azer|cder123@|Cardiologue

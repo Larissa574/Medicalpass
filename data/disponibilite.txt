@@ -1,0 +1,7 @@
+1004|tous les mardi|12:00|15:00
+1004|tous les lundi|12:12|15:12
+1004|tous les vendredi|16:00|19:00
+1004|tous les jeudi|11:30|11:45
+1004|tous les samedi|12:12|13:45
+1004|tous les mardis|09:00|12:00
+1004|tous les dimanches de|12:00|19:00

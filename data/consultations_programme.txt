@@ -1,0 +1,23 @@
+33|GUENDE|Lari|14|1004|Terminée
+1|qsdfg|wxctui|1|1004|Terminée
+2|qsdfg|wxctui|1|1004|Terminée
+3|qsdfg|wxctui|1|1004|Terminée
+4|qsdfg|wxctui|1|1004|Terminée
+5|qsdfg|wxctui|1|1004|Terminée
+6|qsdfg|wxctui|1|1004|Terminée
+10|qsdfg|wxctui|1|1004|Terminée
+14|qsdfg|wxctui|1|1004|Terminée
+23|qsdfg|wxctui|1|1004|Terminée
+44|LARI|SSA|17|1004|Terminée
+56|LARI|SSA|17|1004|Terminée
+57|LARI|SSA|17|1004|Terminée
+71|LARI|SSA|17|1004|Terminée
+86|LARI|SSA|17|1004|Terminée
+102|LARI|SSA|17|1004|Terminée
+103|LARI|SSA|17|1004|Terminée
+120|GUEN|Owen|21|1004|Terminée
+121|GUEN|Owen|21|1004|Terminée
+141|GUEN|Owen|21|1004|Terminée
+162|GUEN|Owen|21|1004|Terminée
+184|GUEN|Owen|21|1004|Terminée
+207|GUEN|Owen|21|1004|non faite
