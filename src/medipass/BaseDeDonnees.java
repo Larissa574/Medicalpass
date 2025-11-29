@@ -1,4 +1,4 @@
-// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+package medipass;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

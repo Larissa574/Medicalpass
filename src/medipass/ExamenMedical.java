@@ -1,3 +1,4 @@
+package medipass;
 public class ExamenMedical {
     private static int compteurId = 1;
     private int id;

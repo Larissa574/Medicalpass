@@ -1,3 +1,4 @@
+package medipass;
 public class Antecedent {
     private String type; // pathologie, chirurgie, allergie, traitement
     private String description;
