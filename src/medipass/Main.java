@@ -205,7 +205,7 @@ public class Main {
         System.out.println("5. Annuler une consultation");
         System.out.println("6. Mettre à jour les constantes");
         System.out.println("7. Exporter les données");
-        System.out.println("8. Importer des patients");
+        System.out.println("8. Importer les données");
         System.out.println("9. Archiver un dossier médical");
         System.out.println("10. Désarchiver un dossier médical");
         System.out.println("11. Modifier mon mot de passe");
@@ -454,20 +454,7 @@ public class Main {
     }
 
     private static void listerUtilisateurs() {
-        System.out.println("\n--- LISTE DES UTILISATEURS ---");
-        List<Utilisateur> tous = Administrateur.getTousLesUtilisateurs(utilisateurs);
-        for (Utilisateur u : tous) {
-            String ligne = "ID: " + u.getId() + " | " + u.getNom() + " " + u.getPrenom() + 
-                          " | " + u.getUsername() + " | " + u.getRole();
-            
-            // Ajouter la spécialité pour les médecins
-            if (u instanceof Medecin) {
-                Medecin medecin = (Medecin) u;
-                ligne += " | " + medecin.getSpecialite();
-            }
-            
-            System.out.println(ligne);
-        }
+        Administrateur.listerTousLesUtilisateurs(utilisateurs);
     }
 
     private static void supprimerUtilisateur() {
@@ -526,47 +513,7 @@ public class Main {
     }
 
     private static void afficherStatistiques() {
-        System.out.println("\n========== STATISTIQUES DU SYSTÈME ==========");
-        System.out.println("Nombre total de patients: " + patients.size());
-        
-        long patientsActifs = patients.stream()
-                                     .filter(p -> !p.getDossierMedical().isArchive())
-                                     .count();
-        System.out.println("Patients actifs: " + patientsActifs);
-        System.out.println("Patients archivés: " + (patients.size() - patientsActifs));
-        System.out.println("\nNombre total d'utilisateurs: " + utilisateurs.size());
-        
-        long admins = utilisateurs.stream()
-                .filter(u -> u instanceof Administrateur)
-                .count();
-        System.out.println("  - Administrateurs: " + admins);
-        
-        List<ProfessionnelSante> professionnelsSante = utilisateurs.stream()
-                .filter(u -> u instanceof ProfessionnelSante)
-                .map(u -> (ProfessionnelSante) u)
-                .collect(Collectors.toList());
-        System.out.println("  - Professionnels de santé: " + professionnelsSante.size());
-        
-        // Statistiques par spécialité (uniquement pour les médecins)
-        System.out.println("\nMédecins par spécialité:");
-        utilisateurs.stream()
-                .filter(u -> u instanceof Medecin)
-                .map(u -> (Medecin) u)
-                .filter(m -> m.getSpecialite() != null && !m.getSpecialite().trim().isEmpty())
-                .collect(Collectors.groupingBy(Medecin::getSpecialite, Collectors.counting()))
-                .forEach((specialite, count) -> 
-                    System.out.println("  - " + specialite + ": " + count));
-        
-        System.out.println("\nNombre total de consultations: " + consultations.size());
-        
-        // Consultations par statut
-        System.out.println("\nConsultations par statut:");
-        consultations.stream()
-                .collect(Collectors.groupingBy(Consultation::getStatut, Collectors.counting()))
-                .forEach((statut, count) -> 
-                    System.out.println("  - " + statut + ": " + count));
-        
-        System.out.println("==============================================\n");
+        Administrateur.afficherStatistiques(utilisateurs, patients, consultations);
     }
 
     private static void voirMesConsultationsMedecin() {
