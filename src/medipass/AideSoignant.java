@@ -121,7 +121,6 @@ public class AideSoignant extends ProfessionnelSante {
         }
         Consultation consultation = new Consultation(dateHeure, patient, medecin, motif, observations);
         consultation.setStatut("non faite");
-        consultation.setMotif(""); // Vider le motif pour ne pas l'afficher dans le fichier
         consultations.add(consultation);
         patient.getDossierMedical().ajouterConsultation(consultation);
         // Plus besoin de stocker dans Medecin - géré globalement
@@ -151,7 +150,6 @@ public class AideSoignant extends ProfessionnelSante {
         System.out.println("- OU mettez le chemin complet (ex: C:\\Users\\Downloads\\monfichier.csv)");
         System.out.println("- Le système cherchera automatiquement dans plusieurs emplacements");
         
-        // Vérifier si c'est un chemin absolu (contient ":")
         String fichierTrouve = null;
         if (fichier.contains(":")) {
             // C'est un chemin absolu, l'utiliser directement

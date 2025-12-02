@@ -321,26 +321,22 @@ public class BaseDeDonnees {
                   String var11;
                   int var12;
                   String var13;
-                  String var14;
                   if (var7.length >= 7) {
                      var10 = var7[2];
                      var11 = var7[3];
                      var12 = parseEntier(var7[4]);
                      var13 = var7[5];
-                     var14 = var7[6];
                   } else {
                      var10 = "";
                      var11 = var7[2];
                      var12 = parseEntier(var7[3]);
                      var13 = var7.length > 4 ? var7[4] : "";
-                     var14 = var7.length > 5 ? var7[5] : "";
                   }
 
                   ProfessionnelSante var15 = (ProfessionnelSante)var2.get(var12);
                   if (var15 != null) {
                      ExamenMedical var16 = new ExamenMedical(var9, var10, var11, var1, var15);
                      var16.setResultat(var13);
-                     var16.setCommentaire(var14);
                      var16.setIdPourPersistence(var8);
                      var1.getDossierMedical().ajouterExamen(var16);
                   }
@@ -466,7 +462,7 @@ public class BaseDeDonnees {
    private static String encoderExamens(List<ExamenMedical> var0) {
       return var0 != null && !var0.isEmpty() ? (String)var0.stream().map((var0x) -> {
          int var10000 = var0x.getId();
-         return "" + var10000 + "~" + nettoyer(var0x.getType()) + "~" + nettoyer(var0x.getNom()) + "~" + nettoyer(var0x.getDate()) + "~" + String.valueOf(var0x.getPrescripteur() != null ? var0x.getPrescripteur().getId() : "") + "~" + nettoyer(var0x.getResultat()) + "~" + nettoyer(var0x.getCommentaire());
+         return "" + var10000 + "~" + nettoyer(var0x.getType()) + "~" + nettoyer(var0x.getNom()) + "~" + nettoyer(var0x.getDate()) + "~" + String.valueOf(var0x.getPrescripteur() != null ? var0x.getPrescripteur().getId() : "") + "~" + nettoyer(var0x.getResultat());
       }).collect(Collectors.joining(";")) : "";
    }
 
@@ -696,7 +692,7 @@ public class BaseDeDonnees {
          PrintWriter writer = new PrintWriter(new FileWriter(fichier));
          
          // En-tête CSV
-         writer.println("ID,NomPatient,PrenomPatient,IDPatient,IDMedecin,NomAideSoignant,PrenomAideSoignant,Statut");
+         writer.println("ID,NomPatient,PrenomPatient,IDPatient,IDMedecin,Statut");
          
          // Données
          for (Consultation consultation : consultations) {
@@ -707,15 +703,10 @@ public class BaseDeDonnees {
                int idPatient = consultation.getPatient().getId();
                int idMedecin = consultation.getProfessionnel().getId();
                
-               // Utiliser les champs du programmeur au lieu du motif
-               String nomAideSoignant = consultation.getProgrammeurNom() != null ? consultation.getProgrammeurNom() : "";
-               String prenomAideSoignant = consultation.getProgrammeurPrenom() != null ? consultation.getProgrammeurPrenom() : "";
-               
                String statut = consultation.getStatut();
                
                writer.println(idConsultation + "," + nomPatient + "," + prenomPatient + "," + 
-                             idPatient + "," + idMedecin + "," + nomAideSoignant + "," + 
-                             prenomAideSoignant + "," + statut);
+                             idPatient + "," + idMedecin + "," + statut);
             }
          }
          

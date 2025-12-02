@@ -3,11 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Administrateur extends Utilisateur {
-    // L'administrateur ne peut PAS accéder aux données médicales
-    // selon le cahier de charges: "L'administrateur ne peut pas accéder 
-    // aux données médicales sans habilitation spécifique."
-    // Son rôle: création de comptes, gestion des rôles et droits d'accès uniquement
-
     public Administrateur(String nom, String prenom, String username, String password) {
         super(nom, prenom, username, password);
     }
@@ -58,15 +53,71 @@ public class Administrateur extends Utilisateur {
             return false;
         }
 
-        long admins = utilisateurs.stream().filter(u -> u instanceof Administrateur).count();
-        if (cible instanceof Administrateur && admins <= 1) {
-            System.out.println("Impossible de supprimer le dernier administrateur.");
-            return false;
-        }
-
+        
         utilisateurs.remove(cible);
         BaseDeDonnees.sauvegarderUtilisateurs(utilisateurs);
         return true;
+    }
+
+    public static void listerTousLesUtilisateurs(List<Utilisateur> utilisateurs) {
+        System.out.println("\n--- LISTE DES UTILISATEURS ---");
+        List<Utilisateur> tous = getTousLesUtilisateurs(utilisateurs);
+        for (Utilisateur u : tous) {
+            String ligne = "ID: " + u.getId() + " | " + u.getNom() + " " + u.getPrenom() + 
+                          " | " + u.getUsername() + " | " + u.getRole();
+            
+            
+            if (u instanceof Medecin) {
+                Medecin medecin = (Medecin) u;
+                ligne += " | " + medecin.getSpecialite();
+            }
+            
+            System.out.println(ligne);
+        }
+    }
+
+    public static void afficherStatistiques(List<Utilisateur> utilisateurs, List<Patient> patients, List<Consultation> consultations) {
+        System.out.println("\n========== STATISTIQUES DU SYSTÈME ==========");
+        System.out.println("Nombre total de patients: " + patients.size());
+        
+        long patientsActifs = patients.stream()
+                                     .filter(p -> !p.getDossierMedical().isArchive())
+                                     .count();
+        System.out.println("Patients actifs: " + patientsActifs);
+        System.out.println("Patients archivés: " + (patients.size() - patientsActifs));
+        System.out.println("\nNombre total d'utilisateurs: " + utilisateurs.size());
+        
+        long admins = utilisateurs.stream()
+                .filter(u -> u instanceof Administrateur)
+                .count();
+        System.out.println("  - Administrateurs: " + admins);
+        
+        List<ProfessionnelSante> professionnelsSante = utilisateurs.stream()
+                .filter(u -> u instanceof ProfessionnelSante)
+                .map(u -> (ProfessionnelSante) u)
+                .collect(java.util.stream.Collectors.toList());
+        System.out.println("  - Professionnels de santé: " + professionnelsSante.size());
+        
+        // Statistiques par spécialité (uniquement pour les médecins)
+        System.out.println("\nMédecins par spécialité:");
+        utilisateurs.stream()
+                .filter(u -> u instanceof Medecin)
+                .map(u -> (Medecin) u)
+                .filter(m -> m.getSpecialite() != null && !m.getSpecialite().trim().isEmpty())
+                .collect(java.util.stream.Collectors.groupingBy(Medecin::getSpecialite, java.util.stream.Collectors.counting()))
+                .forEach((specialite, count) -> 
+                    System.out.println("  - " + specialite + ": " + count));
+        
+        System.out.println("\nNombre total de consultations: " + consultations.size());
+        
+        // Consultations par statut
+        System.out.println("\nConsultations par statut:");
+        consultations.stream()
+                .collect(java.util.stream.Collectors.groupingBy(Consultation::getStatut, java.util.stream.Collectors.counting()))
+                .forEach((statut, count) -> 
+                    System.out.println("  - " + statut + ": " + count));
+        
+        System.out.println("==============================================\n");
     }
     @Override
     public String getRole() {

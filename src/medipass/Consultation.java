@@ -8,10 +8,9 @@ public class Consultation {
     private String motif;
     private String observations;
     private String diagnostic;
-    private String statut; // En cours, Terminée, Annulée
+    private String statut; 
     private String specialite;
-    private String programmeurNom;
-    private String programmeurPrenom;
+
 
     public Consultation(String dateHeure, Patient patient, ProfessionnelSante professionnel, 
                        String motif, String observations) {
@@ -91,19 +90,6 @@ public class Consultation {
 
     public void setSpecialite(String specialite) {
         this.specialite = specialite;
-    }
-
-    public String getProgrammeurNom() {
-        return programmeurNom;
-    }
-
-    public String getProgrammeurPrenom() {
-        return programmeurPrenom;
-    }
-
-    public void setProgrammeur(String nom, String prenom) {
-        this.programmeurNom = nom;
-        this.programmeurPrenom = prenom;
     }
 
     public void setIdPourPersistence(int id) {
